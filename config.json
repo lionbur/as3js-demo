@@ -8,8 +8,8 @@
       "jssrc": "./source/js/app",
       "jsvendor": "./source/js/vendor",
       "json": "./source/json",
-      "images": "./source/images"
-
+      "images": "./source/images",
+      "styles": "./source/styles"
     },
     "compiled": {
       "root": "./compiled/",
@@ -18,7 +18,8 @@
       "jssrc": "./compiled/js/app",
       "jsvendor": "./compiled/js/vendor",
       "json": "./compiled/json",
-      "images": "./compiled/images"
+      "images": "./compiled/images",
+      "styles": "./compiled"
     }
   }
 }

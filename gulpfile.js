@@ -68,7 +68,15 @@ gulp.task('cp:js',function(){
         entries: ENTRY_FILE,
         debug: true
     })
-        .transform("babelify", {presets: ["es2015"]})
+        .transform("babelify", {
+            presets: [
+                "es2015",
+            ],
+            plugins: [
+                "transform-class-properties",
+                "transform-flow-strip-types"
+            ]
+        })
         .bundle().on('error', function(error){
             gutil.log(gutil.colors.red('[Build Error]', error.message));
             this.emit('end');
@@ -102,6 +110,12 @@ gulp.task('cp:img', function () {
         .pipe(gulp.dest(path.resolve(paths().compiled.images)));
 });
 
+gulp.task('cp:css', function () {
+    return gulp.src(
+        ['**/*.css'],
+        {cwd: path.resolve(paths().source.styles)})
+        .pipe(gulp.dest(path.resolve(paths().compiled.styles)));
+});
 
 gulp.task('compile-pipe', ['compile'], function (cb) {
     cb();
@@ -119,6 +133,8 @@ gulp.task('connect', ['compile'], function () {
     gulp.watch(path.resolve(paths().source.template, '**/*.html'), ['cp:template']);
     gulp.watch(path.resolve(paths().source.jssrc, '**/*.js'),['cp:js']);
     gulp.watch(path.resolve(paths().source.json, '**/*.json'),['cp:json']);
+    gulp.watch(path.resolve(paths().source.styles, '**/*.css'),['cp:css']);
+    gulp.watch(path.resolve('./', '../as3js/lib/**/*.js'),['cp:js']);
     gulp.watch(browserSync.reload());
 });
 
@@ -128,7 +144,7 @@ gulp.task('compile-pipe', ['compile'], function (cb) {
 });
 
 gulp.task('default', ['compile']);
-gulp.task('assets', ['cp:template','cp:jsvendor','cp:js', 'cp:img']);
+gulp.task('assets', ['cp:template','cp:jsvendor','cp:js', 'cp:img', 'cp:css']);
 gulp.task('pre-compile', ['clean', 'assets']);
 gulp.task('compile', ['pre-compile'], function (cb) { cb(); });
 gulp.task('serve', ['compile', 'connect']);
